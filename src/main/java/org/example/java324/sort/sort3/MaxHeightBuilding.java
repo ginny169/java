@@ -13,34 +13,49 @@ public class MaxHeightBuilding {
     }
 
     public static long maximumTotalSum(int[] maximumHeight) {
-        int max = 0;
-        for (int i : maximumHeight) {
-            if (i > max) {
-                max = i;
-            }
-        }
-        if (max < maximumHeight.length) {
-            return -1;
-        }
+//        int max = 0;
+//        for (int i : maximumHeight) {
+//            if (i > max) {
+//                max = i;
+//            }
+//        }
+//        if (max < maximumHeight.length) {
+//            return -1;
+//        }
 
         //2 3 3 4
+        /*
+        - max --> max < size ==> return -1;
+        - 2334 --> 4 3 3-1 2
+         */
         Arrays.sort(maximumHeight);
         int n = maximumHeight.length;
-        int result = 0;
-
-
-        int lastAssignedHeight = Integer.MAX_VALUE;
-        for (int i = n - 1; i >= 0; i--) {
-            int currentHeight = Math.min(maximumHeight[i], lastAssignedHeight - 1);
-
-            if (currentHeight <= 0) {
-                return -1;
+        int result = maximumHeight[n-1];
+        int current = maximumHeight[n-1];
+        for (int i = n-2; i>=0; i--){
+            if (maximumHeight[i]>=current){
+                result = result + current-1;
+                current = current -1;
+                if (current<=0){
+                    return -1;
+                }
+            } else {
+                result = result + maximumHeight[i];
+                current = maximumHeight[i];
             }
-
-            result = result + currentHeight;
-            lastAssignedHeight = currentHeight;
         }
-
+//        int lastAssignedHeight = Integer.MAX_VALUE;
+//        for (int i = n - 1; i >= 0; i--) {
+//            int currentHeight = Math.min(maximumHeight[i], lastAssignedHeight - 1);
+//
+//            if (currentHeight <= 0) {
+//                return -1;
+//            }
+//
+//            result = result + currentHeight;
+//            lastAssignedHeight = currentHeight;
+//        }
+//
         return result;
     }
 }

@@ -1,9 +1,6 @@
 package org.example.java324.sort.sort3;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class MiceCheese {
     public static void main(String[] args) {
@@ -14,42 +11,39 @@ public class MiceCheese {
         System.out.println(miceAndCheese(reward1, reward2, k));
 
     }
+    
+    static class RewardData{
+        int reward1;
+        int reward2;
+    }
 
     public static int miceAndCheese(int[] reward1, int[] reward2, int k) {
         /*
+        - 
          */
-        int n = reward1.length;
-        List<Integer> m1 = new ArrayList<>();
-        List<Integer> m2 = new ArrayList<>();
-
-        int[] div = new int[n];
-        for (int i = 0; i < n; i++) {
-            div[i] = reward1[i] - reward2[i];
-        }
-//        for (int i: div){
-//            System.out.println("div: " + Arrays.toString(div));
-//        }
-
-        Integer[] index = new Integer[n];
-        for (int i = 0; i < n; i++) {
-            index[i] = i;
+        List<RewardData> rewardList = new ArrayList<>();
+        for (int i = 0; i < reward1.length; i++) {
+            RewardData rewardData = new RewardData();
+            rewardData.reward1 = reward1[i];
+            rewardData.reward2 = reward2[i];
+            rewardList.add(rewardData);
         }
 
-        Arrays.sort(index, (i1, i2) -> (div[i1] - div[i1]));
-//        for (int i:index){
-//            System.out.println(i);
-//        }
+        Collections.sort(rewardList, new Comparator<RewardData>() {
+            @Override
+            public int compare(RewardData o1, RewardData o2) {
+                return (o1.reward1 - o1.reward2) - (o2.reward1 - o2.reward2);
+            }
+        });
+
         int result = 0;
-
-        for (int i = 0; i < k; i++) {
-            int idx = index[i];
-            result = result + reward1[idx];
+        for (int i = rewardList.size()-1; i>= rewardList.size() - k; i--){
+            result = result + rewardList.get(i).reward1;
+        }
+        for (int i = rewardList.size() - k-1; i>=0; i--){
+            result = result + rewardList.get(i).reward2;
         }
 
-        for (int i = k; i < n; i++) {
-            int idx = index[i];
-            result = result + reward2[idx];
-        }
         return result;
     }
 }

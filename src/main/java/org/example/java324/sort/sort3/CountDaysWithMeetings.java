@@ -4,33 +4,30 @@ import java.util.*;
 
 public class CountDaysWithMeetings {
     public static void main(String[] args) {
-        int[][] arr = {{5, 7}, {1, 3}, {9, 10}};
+        int[][] arr = {{5, 7}, {8, 9}, {3, 10}};
         System.out.println(countDays(10, arr));
 
     }
 
     public static int countDays(int days, int[][] meetings) {
-        //sort by phần tử thứ 2 của mỗi []
+        /*
+        - sort theo startDate.
+        - for i -> length
+        -- result += meetings[i][0]-meetings[i-1][1]
+        result = startDate[0][0] - 1 + result + days - endDate[i][1].
+         */
+        //{{1,3}, {5,10}, {7, 9}, {12, 13}
         Arrays.sort(meetings, (a, b) -> Integer.compare(a[0], b[0]));
 
-        int meetingDays = 0;
-        int mergedStart = meetings[0][0];
-        int mergeEnd = meetings[0][1];
-
-        for (int i = 1; i < meetings.length; i++) {
-            int curStart = meetings[i][0];
-            int curEnd = meetings[i][1];
-
-            if (curStart < mergeEnd) {
-                mergeEnd = Math.max(mergeEnd, curEnd);
-            } else {
-                meetingDays += mergeEnd - mergedStart + 1;
-                mergedStart = curStart;
-                mergeEnd = curEnd;
+        int result = 0;
+        int maxEnddate = meetings[0][1];
+        for (int i = 1; i < meetings.length; i++){
+            if (meetings[i][0] > maxEnddate){
+                result = result + meetings[i][0] - maxEnddate - 1;
             }
+            maxEnddate = Math.max(meetings[i][1],maxEnddate);
         }
-        meetingDays += mergeEnd - mergedStart + 1;
-
-        return days - meetingDays;
+        result = meetings[0][0] - 1 + result + days - maxEnddate;
+        return result;
     }
 }
