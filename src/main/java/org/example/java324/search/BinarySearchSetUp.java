@@ -36,32 +36,36 @@ public class BinarySearchSetUp {
     //Lowerbound --> Tìm chỉ số đầu tiên trong mảng đã sắp xếp mà phần tử tại đó ≥ target.
     public static int findLowerBound(int[] arr, int target) {
         int left = 0;
-        int right = arr.length;
+        int right = arr.length-1;
+        int ans = arr.length;
 
-        while (left < right) {
+        while (left <= right) {
             int mid = (left + right) / 2;
             if (arr[mid] >= target) {
-                right = mid;
+                ans = mid;
+                right = mid-1;
             } else {
                 left = mid+1;
             }
         }
-        return right;
+        return ans;
     }
 
     //Lowerbound --> Tìm chỉ số đầu tiên trong mảng đã sắp xếp mà phần tử tại đó > target.
     public static int findUpperBound(int[] arr, int target) {
         int left = 0;
-        int right = arr.length;
+        int right = arr.length-1;
+        int ans = arr.length;
 
-        while (left < right) {
+        while (left <= right) {
             int mid = (left + right) / 2;
             if (arr[mid] > target) {
-                right = mid;
+                ans = mid;
+                right = mid-1;
             } else {
                 left = mid+1;
             }
         }
-        return left;
+        return ans;
     }
 }
