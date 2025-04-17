@@ -55,7 +55,7 @@ public class MostProfitAssignWork {
     public static int findUpperBound(List<Job> arr, int target) {
         int left = 0;
         int right = arr.size() - 1;
-        int ans = -1;
+        int ans = arr.size();
 
         while (left <= right) {
             int mid = (left + right) / 2;
