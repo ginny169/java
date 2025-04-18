@@ -4,9 +4,9 @@ import java.util.*;
 
 public class MostProfitAssignWork {
     public static void main(String[] args) {
-        int[] difficulty = {2,4,6,8,10};
-        int[] profit = {10,20,30,40,50};
-        int[] worker = {4,5,6,7};
+        int[] difficulty = {5,50,92,21,24,70,17,63,30,53};
+        int[] profit = {68,100,3,99,56,43,26,93,55,25};
+        int[] worker = {96,3,55,30,11,58,68,36,26,1};
 
         int total = maxProfitAssignment(difficulty, profit, worker);
         System.out.println("Total maximum profit: " + total);
@@ -15,10 +15,12 @@ public class MostProfitAssignWork {
     public static class Job {
         int difficulty;
         int profit;
+        int maxProfit;
 
         public Job(int difficulty, int profit) {
             this.difficulty = difficulty;
             this.profit = profit;
+
         }
     }
 
@@ -38,15 +40,17 @@ public class MostProfitAssignWork {
         jobs.sort(Comparator.comparingInt(j -> j.difficulty));
 
         //xử lý dificult và profit theo max profit
-        for (int i = 1; i < n; i++) {
-            jobs.get(i).profit = Math.max(profit[i], profit[i - 1]);
+        int max = 0;
+        for (int i = 0; i < n; i++) {
+            max = Math.max(jobs.get(i).profit, max);
+            jobs.get(i).maxProfit = max;
         }
 
         int total = 0;
         for (int w : worker) {
             int index = findUpperBound(jobs, w);
             if (index > 0) {
-                total = total + jobs.get(index - 1).profit;
+                total = total + jobs.get(index - 1).maxProfit;
             }
         }
         return total;
@@ -58,7 +62,7 @@ public class MostProfitAssignWork {
         int ans = arr.size();
 
         while (left <= right) {
-            int mid = (left + right) / 2;
+            int mid = left + (right-left)/2;
             if (arr.get(mid).difficulty > target) {
                 ans = mid;
                 right = mid - 1;
@@ -68,4 +72,5 @@ public class MostProfitAssignWork {
         }
         return ans;
     }
+
 }
